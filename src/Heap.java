@@ -90,10 +90,10 @@ public class Heap {
         int left = curHeap.getLeftIdx(idx);
         int right = curHeap.getRightIdx(idx);
         int largest = idx;
-        if(left+1<=curHeap.getHeapSize() && curHeap.getValue(left)> curHeap.getValue(idx)){
+        if(left<curHeap.getHeapSize() && curHeap.getValue(left)> curHeap.getValue(idx)){
             largest = left;
         }
-        if(right+1<=curHeap.getHeapSize() && curHeap.getValue(right)> curHeap.getValue(largest)){
+        if(right<curHeap.getHeapSize() && curHeap.getValue(right)> curHeap.getValue(largest)){
             largest = right;
         }
         if(largest!=idx){

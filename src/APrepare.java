@@ -15,7 +15,31 @@ public class APrepare {
             System.out.print(num+" ");
         }*/
 
-        System.out.print(kmp("BBC ABCDAB ABCDABCDABDE","ABCDABDE"));
+        /*PriorityQueue<Block> queue = new PriorityQueue<>(new BlockComparator());
+        queue.add(new Block(0));
+        queue.add(new Block(7));
+        queue.add(new Block(2));
+        queue.add(new Block(1));
+        queue.add(new Block(3));
+
+
+        while(!queue.isEmpty()){
+            System.out.println(queue.remove().distance);
+        }*/
+
+        TreeNode head = new TreeNode(1);
+        head.left = new TreeNode(2);
+        head.right = new TreeNode(3);
+        head.right.left = new TreeNode(4);
+        head.right.right = new TreeNode(5);
+
+        String code = TreeManipulation.serialize(head);
+
+        TreeManipulation.printByLevel(head);
+        System.out.println(code);
+
+        TreeNode root = TreeManipulation.deserialize(code);
+        TreeManipulation.printByLevel(root);
     }
 
     public static int kmp(String str, String ptn){
@@ -399,6 +423,52 @@ public class APrepare {
 
 class TreeManipulation{
 
+    public static String serialize(TreeNode root) {
+        if(root==null)
+            return "";
+
+        String left = "null";
+        String right = "null";
+
+        if(root.left!=null)
+            left = new String(serialize(root.left));
+        if(root.right!=null)
+            right = new String(serialize(root.right));
+
+        return root.val+" "+left+" "+right;
+    }
+    public static TreeNode deserialize(String data) {
+        String[] nodes = data.split(" ");
+        LinkedList<String> queue = new LinkedList<>();
+        for(String node: nodes)
+            queue.add(node);
+        if(queue.get(0).equals("null"))
+            return null;
+        return deserializeHelper(queue);
+
+    }
+
+    public static TreeNode deserializeHelper(LinkedList<String> queue){
+        String cur = queue.removeFirst();
+        if(cur.equals("null"))
+            return null;
+        else{
+            TreeNode root = decode(cur);
+            root.left = deserializeHelper(queue);
+            root.right = deserializeHelper(queue);
+            return root;
+        }
+    }
+
+
+
+    public static TreeNode decode(String code){
+        if(code.equals("null"))
+            return null;
+        else
+            return new TreeNode(Integer.valueOf(code));
+    }
+
     public static List<TreeNode> reverseBT(TreeNode head){
 
         List<TreeNode> res = new ArrayList<>();
@@ -743,4 +813,39 @@ class Node{
         this.key = key;
         this.value = value;
     }
+}
+
+
+class Block implements Comparable<Block>{
+
+    int distance;
+
+    public Block(int distance){
+        this.distance = distance;
+    }
+
+    @Override
+    public int compareTo(Block other){
+        return this.distance-other.distance;
+    }
+}
+
+class BlockComparator implements Comparator<Block>
+{
+    @Override
+    public int compare(Block x, Block y)
+    {
+        int res = x.distance - y.distance;
+        if(res==0)
+            return 0;
+        else
+            return res>0? 1:-1;
+    }
+}
+
+
+enum Type{
+    REGULAR,
+    FULL_SIZE,
+    STANDARD
 }
