@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.*;
 import java.util.List;
 
 /**
@@ -12,8 +10,48 @@ public class Leetcode15 {
 
     public static void main(String[] args){
 
-        int[] nums = {-4,-2,-2,-2,0,1,2,2,2,3,3,4,4,6,6};
-        System.out.println(threeSum2(nums));
+//        int[] nums = {-4,-2,-2,-2,0,1,2,2,2,3,3,4,4,6,6};
+        int[] nums = {-1,0,1,2,-1,-4};
+        System.out.println(threeSum3(nums));
+    }
+
+    public static List<List<Integer>> threeSum3(int[] nums) {
+
+        List<List<Integer>> res = new ArrayList<>();
+        HashSet<String> set = new HashSet<>();
+
+        Arrays.sort(nums);
+
+        for(int i=0;i<nums.length;i++){
+
+            int target = 0-nums[i];
+
+            int low = i+1;
+            int high = nums.length-1;
+            while(low<high){
+                if(target==nums[low]+nums[high]){
+                    String hash = nums[i]+","+nums[low]+","+nums[high];
+                    if(!set.contains(hash)){
+                        List<Integer> one = new ArrayList<>();
+                        one.add(nums[i]);
+                        one.add(nums[low]);
+                        one.add(nums[high]);
+                        res.add(one);
+                        set.add(hash);
+                    }
+                    low++;
+                    high--;
+                }
+                else if(target>nums[low]+nums[high]){
+                    low++;
+                }
+                else{
+                    high--;
+                }
+            }
+        }
+
+        return res;
     }
 
     public static List<List<Integer>> threeSum(int[] nums) {
