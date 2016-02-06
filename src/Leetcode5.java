@@ -5,9 +5,80 @@ public class Leetcode5 {
 
     public static void main(String[] args){
 
-        System.out.println(longestPalindrome2("aaabba"));
+        System.out.println(longestPalindrome4("ccc"));
     }
 
+
+    public static String longestPalindrome4(String s) {
+
+        int len = s.length();
+
+        if(len==0)
+            return "";
+
+        if(len==1)
+            return s;
+
+
+        boolean[][] dp = new boolean[len][len];
+        int max = 0;
+        int b = 0;
+        int e = 0;
+
+        for(int i=0;i<len;i++){
+            for(int j=0;j<=i;j++){
+                if((i-j<2 || dp[j+1][i-1]) && s.charAt(i)==s.charAt(j)){
+                    dp[j][i] = true;
+                    if(i-j+1>max){
+                        max = i-j+1;
+                        b = j;
+                        e = i+1;
+                    }
+                }
+            }
+        }
+
+        return s.substring(b,e);
+    }
+
+    public static String longestPalindrome3(String s) {
+
+        int len = s.length();
+
+        if(len==0)
+            return "";
+
+        if(len==1)
+            return s;
+
+        int[][] dp = new int[len][len];
+        int max = 0;
+        int b = 0;
+        int e = 0;
+        for(int i=0;i<len;i++){
+            if(s.charAt(0)==s.charAt(len-i-1)){
+                dp[0][i] = 1;
+            }
+            if(s.charAt(i)==s.charAt(len-1)){
+                dp[i][0] = 1;
+            }
+        }
+
+        for(int i=1;i<len;i++){
+            for(int j=1;j<len;j++){
+                if(s.charAt(i)==s.charAt(len-j-1)){
+                    dp[i][j] = 1+dp[i-1][j-1];
+                    if(dp[i][j]>max){
+                        max = dp[i][j];
+                        b = i-max+1;
+                        e = i+1;
+                    }
+                }
+            }
+        }
+
+        return s.substring(b,e);
+    }
 
 
     public static String longestPalindrome2(String s) {
