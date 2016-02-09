@@ -5,8 +5,34 @@ public class Leetcode9 {
 
     public static void main(String[] args){
 
-        System.out.println(isPalindrome(123321));
+        System.out.println(isPalindrome2(1000021));
     }
+
+    public static boolean isPalindrome2(int x) {
+
+        if(x<0)
+            return false;
+
+        if(x/10==0)
+            return true;
+
+        int high = 1;
+
+        while(x/high>=10){
+            high*=10;
+        }
+
+        while(high>0){
+
+            if(x/high!=x%10)
+                return false;
+            x%=high;
+            x/=10;
+            high/=100;
+        }
+        return true;
+    }
+
 
     public static boolean isPalindrome(int x) {
         if(x<0)

@@ -5,8 +5,59 @@ public class Leetcode8 {
 
     public static void main(String[] args) {
 
-        System.out.println(myAtoi("    10522545459"));
+        System.out.println(myAtoi2("-2147483647"));
 
+    }
+
+    public static int myAtoi2(String str) {
+        int max = Integer.MAX_VALUE;
+        int min = Integer.MIN_VALUE;
+
+        str = str.trim();
+
+        int len =str.length();
+
+        if(len==0 || (len==1 && (str.charAt(0)=='-' || str.charAt(0)=='+')))
+            return 0;
+        if(str.charAt(0)=='+' || str.charAt(0)=='-'){
+            if(str.charAt(1)=='+' || str.charAt(1)=='-'){
+                return 0;
+            }
+        }
+
+
+        if(str.charAt(0)=='-'){
+            int res = 0;
+            for(int i=1;i<len;i++){
+
+                if(!Character.isDigit(str.charAt(i)))
+                    return -res;
+
+                if(min/10>-res)
+                    return min;
+                res *= 10;
+                if(min+res>=-(str.charAt(i)-'0'))
+                    return min;
+                res += str.charAt(i)-'0';
+            }
+            return -res;
+        } else{
+            int res = 0;
+            int i=0;
+            if(str.charAt(0)=='+')
+                i++;
+            for(;i<len;i++){
+                if(!Character.isDigit(str.charAt(i)))
+                    return res;
+                if(max/10<res)
+                    return max;
+                res *= 10;
+                if(max-res<=str.charAt(i)-'0')
+                    return max;
+                res += str.charAt(i)-'0';
+            }
+            return res;
+        }
     }
 
 
