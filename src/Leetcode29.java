@@ -5,7 +5,52 @@ public class Leetcode29 {
 
     public static void main(String[] args) {
 
-        System.out.println(divide(20, -2));
+        System.out.println(divide3(-2147483648, -2147483648));
+    }
+
+    public static int divide3(int dividend, int divisor) {
+
+        int max = Integer.MAX_VALUE;
+        int min = Integer.MIN_VALUE;
+
+        if(divisor==0)
+            return max;
+        else if(divisor==min) {
+            if(dividend==min)
+                return 1;
+            else
+                return 0;
+        }
+        else if(dividend==min){
+            if(divisor==-1)
+                return max;
+            else if(divisor==1)
+                return min;
+            else{
+                return (divisor&1)==1? divide(dividend+1,divisor) : divide(dividend>>1,divisor>>1);
+            }
+        } else if(dividend<0 && divisor<0){
+            return divide(-dividend, -divisor);
+        } else if(dividend<0 ||divisor<0){
+            return -divide(-dividend, divisor);
+        }
+
+        int ans = 0;
+
+        while(dividend>=divisor){
+
+            int tmp = divisor;
+            int tmpres = 1;
+
+            while(dividend >= (tmp<<1) && (tmp<<1) > tmp){
+                tmp <<= 1;
+                tmpres <<= 1;
+            }
+            dividend -= tmp;
+            ans += tmpres;
+        }
+
+        return ans;
     }
 
     public static int divide(int dividend, int divisor) {
@@ -35,10 +80,9 @@ public class Leetcode29 {
         else if(dividend<0 || divisor<0)
             return -divide(-dividend,divisor);
 
-
         /*
             常规位运算
-         */
+        */
 
         int res = 0;
         while(dividend>=divisor){

@@ -12,11 +12,82 @@ public class Leetcode30 {
 
         String s = "barfoofoobarthefoobarman";
         String[] words = {"bar", "foo","the"};
-        List<Integer> res = findSubstring(s, words);
+        List<Integer> res = findSubstring4(s, words);
         for (int ans: res){
             System.out.println(ans);
         }
     }
+
+    public static List<Integer> findSubstring4(String s, String[] words) {
+
+        List<Integer> res = new ArrayList<>();
+        if(s.length()==0 || words.length==0)
+            return res;
+
+
+        HashMap<String,Integer> map = new HashMap<>();
+
+        for(String str: words){
+            if(map.containsKey(str)){
+                map.put(str,map.get(str)+1);
+            } else{
+                map.put(str,1);
+            }
+        }
+
+        int k = words[0].length();
+        int wordNum = words.length;
+        int len = s.length();
+        int max = len-k;
+
+        for(int i=0;i<k;i++){
+
+            HashMap<String,Integer> tmpMap = new HashMap<>();
+            int count = 0;
+
+            int start = i;
+            for(int end=start;end<=max;end+=k){
+                String cur = s.substring(end,end+k);
+
+                if(!map.containsKey(cur)){
+                    tmpMap.clear();
+                    count = 0;
+                    start = end+k;
+                    continue;
+                }
+
+                if(tmpMap.containsKey(cur)){
+                    int time = tmpMap.get(cur)+1;
+                    tmpMap.put(cur, time);
+                } else{
+                    tmpMap.put(cur, 1);
+                }
+
+                count++;
+
+
+                if(tmpMap.get(cur)>map.get(cur)){
+                    while(tmpMap.get(cur)>map.get(cur)){
+                        String rmv = s.substring(start,start+k);
+                        tmpMap.put(rmv, tmpMap.get(rmv)-1);
+                        start += k;
+                        count--;
+                    }
+                }
+
+                if(count==wordNum){
+                    res.add(start);
+                    String rmv = s.substring(start,start+k);
+                    tmpMap.put(rmv, tmpMap.get(rmv)-1);
+                    count--;
+                    start += k;
+                }
+            }
+        }
+
+        return res;
+    }
+
 
     public static List<Integer> findSubstring(String s, String[] words){
 

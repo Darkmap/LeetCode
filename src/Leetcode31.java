@@ -8,9 +8,39 @@ public class Leetcode31 {
     public static void main(String[] args) {
 
         int[] nums = {1,1};
-        nextPermutation(nums);
+        nextPermutation2(nums);
         for(int itr: nums)
             System.out.print(itr+" ");
+    }
+
+    public static void nextPermutation2(int[] nums) {
+
+        if(nums.length<=1)
+            return;
+
+        int pivot = nums.length-2;
+        for(;pivot>=0;pivot--){
+            if(nums[pivot]<nums[pivot+1]){
+                break;
+            }
+        }
+        if(pivot==-1){
+            Arrays.sort(nums);
+            return;
+        }
+
+        int newP = pivot+1;
+        for(int i=nums.length-1;i>pivot;i--){
+            if(nums[i]<nums[newP] && nums[i]>nums[pivot]){
+                newP = i;
+            }
+        }
+
+        int tmp = nums[newP];
+        nums[newP] = nums[pivot];
+        nums[pivot] = tmp;
+
+        Arrays.sort(nums, pivot + 1, nums.length);
     }
 
     public static void nextPermutation(int[] nums) {
@@ -56,7 +86,6 @@ public class Leetcode31 {
         nums[greaterIdx] = tmp;
 
         Arrays.sort(nums, idx, len);
-
     }
 
 }
